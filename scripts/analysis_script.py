@@ -246,7 +246,7 @@ def plot_over_an_hour(df1, df2, df3):
     
     # Plot GHI
     for df, label in zip(filtered_dfs, ['Benin', 'Sierraleone', 'Togo']):
-        axs[0].plot(df.index, df['GHI'], label=f'{label} GHI', marker='o')
+        axs[0].plot(df.index, df['GHI'], label=f'{label}', marker='o')
     axs[0].set_title('GHI')
     axs[0].set_ylabel('GHI')
     axs[0].legend()
@@ -254,7 +254,7 @@ def plot_over_an_hour(df1, df2, df3):
     
     # Plot DNI
     for df, label in zip(filtered_dfs, ['Benin', 'Sierraleone', 'Togo']):
-        axs[1].plot(df.index, df['DNI'], label=f'{label} DNI', marker='o')
+        axs[1].plot(df.index, df['DNI'], label=f'{label}', marker='o')
     axs[1].set_title('DNI')
     axs[1].set_ylabel('DNI')
     axs[1].legend()
@@ -262,7 +262,7 @@ def plot_over_an_hour(df1, df2, df3):
     
     # Plot DHI
     for df, label in zip(filtered_dfs, ['Benin', 'Sierraleone', 'Togo']):
-        axs[2].plot(df.index, df['DHI'], label=f'{label} DHI', marker='o')
+        axs[2].plot(df.index, df['DHI'], label=f'{label}', marker='o')
     axs[2].set_title('DHI')
     axs[2].set_ylabel('DHI')
     axs[2].legend()
@@ -270,7 +270,119 @@ def plot_over_an_hour(df1, df2, df3):
     
     # Plot Tamb
     for df, label in zip(filtered_dfs, ['Benin', 'Sierraleone', 'Togo']):
-        axs[3].plot(df.index, df['Tamb'], label=f'{label} Tamb', marker='o')
+        axs[3].plot(df.index, df['Tamb'], label=f'{label}', marker='o')
+    axs[3].set_title('Tamb')
+    axs[3].set_ylabel('Tamb')
+    axs[3].legend()
+    axs[3].grid(True)
+    
+    # Formatting the x-axis
+    axs[3].set_xlabel('Time')
+    plt.xticks(rotation=45)
+    plt.tight_layout(rect=[0, 0, 1, 0.97])  #
+    
+    plt.show()
+
+def plot_over_a_day(df1, df2, df3):
+    # Convert 'Timestamp' columns to datetime
+    for df in [df1, df2, df3]:
+        df['Timestamp'] = pd.to_datetime(df['Timestamp'])
+    
+    # Filter data for a specific date
+    date_str = '2022-01-01'
+    filtered_dfs = [df[df['Timestamp'].dt.strftime('%Y-%m-%d') == date_str] for df in [df1, df2, df3]]
+    
+    # Set 'Timestamp' as index for plotting
+    for df in filtered_dfs:
+        df.set_index('Timestamp', inplace=True)
+    
+    # Create subplots
+    fig, axs = plt.subplots(4, 1, figsize=(14, 18))
+    fig.suptitle('GHI, DNI, DHI, and Tamb over a Day', fontsize=16)
+    
+    # Plot GHI
+    for df, label in zip(filtered_dfs, ['Benin', 'Sierraleone', 'Togo']):
+        axs[0].plot(df.index, df['GHI'], label=f'{label}', marker='o')
+    axs[0].set_title('GHI')
+    axs[0].set_ylabel('GHI')
+    axs[0].legend()
+    axs[0].grid(True)
+    
+    # Plot DNI
+    for df, label in zip(filtered_dfs, ['Benin', 'Sierraleone', 'Togo']):
+        axs[1].plot(df.index, df['DNI'], label=f'{label}', marker='o')
+    axs[1].set_title('DNI')
+    axs[1].set_ylabel('DNI')
+    axs[1].legend()
+    axs[1].grid(True)
+    
+    # Plot DHI
+    for df, label in zip(filtered_dfs, ['Benin', 'Sierraleone', 'Togo']):
+        axs[2].plot(df.index, df['DHI'], label=f'{label}', marker='o')
+    axs[2].set_title('DHI')
+    axs[2].set_ylabel('DHI')
+    axs[2].legend()
+    axs[2].grid(True)
+    
+    # Plot Tamb
+    for df, label in zip(filtered_dfs, ['Benin', 'Sierraleone', 'Togo']):
+        axs[3].plot(df.index, df['Tamb'], label=f'{label}', marker='o')
+    axs[3].set_title('Tamb')
+    axs[3].set_ylabel('Tamb')
+    axs[3].legend()
+    axs[3].grid(True)
+    
+    # Formatting the x-axis
+    axs[3].set_xlabel('Time')
+    plt.xticks(rotation=45)
+    plt.tight_layout(rect=[0, 0, 1, 0.97])  #
+    
+    plt.show()
+
+def plot_over_a_month(df1, df2, df3):
+    # Convert 'Timestamp' columns to datetime
+    for df in [df1, df2, df3]:
+        df['Timestamp'] = pd.to_datetime(df['Timestamp'])
+    
+    # Filter data for a specific date
+    date_str = '2022-01'
+    filtered_dfs = [df[df['Timestamp'].dt.strftime('%Y-%m') == date_str] for df in [df1, df2, df3]]
+    
+    # Set 'Timestamp' as index for plotting
+    for df in filtered_dfs:
+        df.set_index('Timestamp', inplace=True)
+    
+    # Create subplots
+    fig, axs = plt.subplots(4, 1, figsize=(14, 18))
+    fig.suptitle('GHI, DNI, DHI, and Tamb over a Month', fontsize=16)
+    
+    # Plot GHI
+    for df, label in zip(filtered_dfs, ['Benin', 'Sierraleone', 'Togo']):
+        axs[0].plot(df.index, df['GHI'], label=f'{label}', marker='.')
+    axs[0].set_title('GHI')
+    axs[0].set_ylabel('GHI')
+    axs[0].legend()
+    axs[0].grid(True)
+    
+    # Plot DNI
+    for df, label in zip(filtered_dfs, ['Benin', 'Sierraleone', 'Togo']):
+        axs[1].plot(df.index, df['DNI'], label=f'{label}', marker='.')
+    axs[1].set_title('DNI')
+    axs[1].set_ylabel('DNI')
+    axs[1].legend()
+    axs[1].grid(True)
+    
+    # Plot DHI
+    for df, label in zip(filtered_dfs, ['Benin', 'Sierraleone', 'Togo']):
+        axs[2].plot(df.index, df['DHI'], label=f'{label}', marker='.')
+    axs[2].set_title('DHI')
+    axs[2].set_ylabel('DHI')
+    axs[2].legend()
+    axs[2].grid(True)
+    
+    # Plot Tamb
+    for df, label in zip(filtered_dfs, ['Benin', 'Sierraleone', 'Togo']):
+        axs[3].plot(df.index, df['Tamb'], label=f'{label}', marker='.')
     axs[3].set_title('Tamb')
     axs[3].set_ylabel('Tamb')
     axs[3].legend()
