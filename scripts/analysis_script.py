@@ -458,5 +458,58 @@ def polar_plot(df):
 def temperatur_analysis(df):
     corr_matrix = df[['RH', 'Tamb', 'GHI', 'DNI', 'DHI']].corr()
     print(corr_matrix)
+    
+    plt.figure(figsize=(14, 6))
 
+    plt.subplot(1, 2, 1)
+    sb.scatterplot(x='RH', y='Tamb', data=df)
+    plt.title('Relative Humidity vs Temperature')
+    plt.xlabel('Relative Humidity (%)')
+    plt.ylabel('Temperature (°C)')
+    
+    plt.subplot(1, 2, 2)
+    sb.scatterplot(x='RH', y='GHI', data=df, label='GHI', color='orange')
+    sb.scatterplot(x='RH', y='DNI', data=df, label='DNI', color='blue')
+    sb.scatterplot(x='RH', y='DHI', data=df, label='DHI', color='green')
+    plt.title('Relative Humidity vs Solar Radiation')
+    plt.xlabel('Relative Humidity (%)')
+    plt.ylabel('Solar Radiation (W/m²)')
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
+def frequency_distribution(df):
+    plt.figure(figsize=(15, 10))
+
+    plt.subplot(2, 3, 1)
+    sb.histplot(df['GHI'], bins=30, kde=True, color='skyblue')
+    plt.title('Histogram of GHI')
+    plt.xlabel('GHI (W/m²)')
+    plt.ylabel('Frequency')
+
+    plt.subplot(2, 3, 2)
+    sb.histplot(df['DNI'], bins=30, kde=True, color='orange')
+    plt.title('Histogram of DNI')
+    plt.xlabel('DNI (W/m²)')
+    plt.ylabel('Frequency')
+    
+    plt.subplot(2, 3, 3)
+    sb.histplot(df['DHI'], bins=30, kde=True, color='green')
+    plt.title('Histogram of DHI')
+    plt.xlabel('DHI (W/m²)')
+    plt.ylabel('Frequency')
+    
+    plt.subplot(2, 3, 4)
+    sb.histplot(df['WS'], bins=30, kde=True, color='purple')
+    plt.title('Histogram of Wind Speed')
+    plt.xlabel('Wind Speed (m/s)')
+    plt.ylabel('Frequency')
+    
+    plt.subplot(2, 3, 5)
+    sb.histplot(df['Tamb'], bins=30, kde=True, color='red')
+    plt.title('Histogram of Temperature')
+    plt.xlabel('Temperature (°C)')
+    plt.ylabel('Frequency')
+
+    plt.tight_layout()
+    plt.show()
 
