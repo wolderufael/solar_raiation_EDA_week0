@@ -513,3 +513,23 @@ def frequency_distribution(df):
     plt.tight_layout()
     plt.show()
 
+def bubble_chart(df):
+    plt.figure(figsize=(12, 8))
+    
+    # Plot GHI vs. Tamb vs. WS, with bubble size representing RH
+    plt.subplot(1, 2, 1)
+    plt.scatter(df['Tamb'], df['GHI'], s=df['RH']*10, alpha=0.5, c=df['WS'], cmap='viridis', edgecolor='w', linewidth=0.5)
+    plt.colorbar(label='Wind Speed (m/s)')
+    plt.title('GHI vs. Temperature vs. Wind Speed (Bubble Size: RH)')
+    plt.xlabel('Temperature (°C)')
+    plt.ylabel('GHI (W/m²)')
+
+    plt.subplot(1, 2, 2)
+    plt.scatter(df['Tamb'], df['GHI'], s=df['BP']*0.1, alpha=0.5, c=df['WS'], cmap='viridis', edgecolor='w', linewidth=0.5)
+    plt.colorbar(label='Wind Speed (m/s)')
+    plt.title('GHI vs. Temperature vs. Wind Speed (Bubble Size: BP)')
+    plt.xlabel('Temperature (°C)')
+    plt.ylabel('GHI (W/m²)')
+    
+    plt.tight_layout()
+    plt.show()
