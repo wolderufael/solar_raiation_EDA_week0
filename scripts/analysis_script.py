@@ -398,10 +398,23 @@ def plot_over_a_month(df1, df2, df3):
 
     
 def correlation(df):
-    df_correlation=df[['GHI','DNI','DHI','TModA', 'TModB']].corr()
-    plt.figure(figsize=(10, 6))
-    sb.heatmap(df_correlation,annot=True)
-    sb.pairplot(df_correlation)
-    plt.show()
+    df_correlation_temp=df[['GHI','DNI','DHI','TModA', 'TModB']].corr()
+    df_correlation_wind=df[['GHI','DNI','DHI','WS', 'WSgust', 'WD']].corr()
     
-    return df_correlation
+    plt.figure(figsize=(14, 12))
+    
+    plt.subplot(2, 1, 1)
+    # First heatmap for temperature correlations
+    plt.subplot(2, 1, 1)  # 2 rows, 1 column, position 1
+    sb.heatmap(df_correlation_temp, annot=True, cmap='coolwarm')
+    plt.title('Temperature and Solar Irradiance Correlation')
+    
+    # Second heatmap for wind correlations
+    plt.subplot(2, 1, 2)  # 2 rows, 1 column, position 2
+    sb.heatmap(df_correlation_wind, annot=True, cmap='coolwarm')
+    plt.title('Wind Conditions and Solar Irradiance Correlation')
+
+    plt.suptitle('Correlation Matrix of Temperature, Wind Conditions, and Solar Irradiance', y=1.02)
+    plt.tight_layout()
+    plt.show()    
+    # return df_correlation
