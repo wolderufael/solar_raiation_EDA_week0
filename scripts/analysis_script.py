@@ -68,25 +68,7 @@ def mean_median_std_comparison(df1,df2,df3):
     plt.xlabel('Site')
     plt.ylabel('Mean GHI')
     plt.show()
-    #median comparison plot of GHI
-    median_ghi_1 = df1['GHI'].median()
-    median_ghi_2 = df2['GHI'].median()
-    median_ghi_3 = df3['GHI'].median()
     
-    data = {
-    'Site': ['Benin', 'Sierraleone', 'Togo'],
-    'Median GHI': [median_ghi_1, median_ghi_2, median_ghi_3]
-    }
-    median_df = pd.DataFrame(data)
-    plt.figure(figsize=(10, 6))
-    bars=plt.bar(median_df['Site'], median_df['Median GHI'], color=['blue', 'green', 'orange'])
-    
-    plt.bar_label(bars, fmt='%.2f')
-
-    plt.title('Comparison of Median GHI Across Three Sites')
-    plt.xlabel('Site')
-    plt.ylabel('Median GHI')
-    plt.show()
     #standard deviation comparison plot of GHI
     std_ghi_1 = df1['GHI'].std()
     std_ghi_2 = df2['GHI'].std()
@@ -128,26 +110,6 @@ def mean_median_std_comparison(df1,df2,df3):
     plt.xlabel('Site')
     plt.ylabel('Mean DNI')
     plt.show()
-    #median comparison plot of DNI
-    median_dni_1 = df1['DNI'].median()
-    median_dni_2 = df2['DNI'].median()
-    median_dni_3 = df3['DNI'].median()
-    
-    data = {
-    'Site': ['Benin', 'Sierraleone', 'Togo'],
-    'Median DNI': [median_dni_1, median_dni_2, median_dni_3]
-    }
-    median_df = pd.DataFrame(data)
-    plt.figure(figsize=(10, 6))
-    bars=plt.bar(median_df['Site'], median_df['Median DNI'], color=['blue', 'green', 'orange'])
-    
-    plt.bar_label(bars, fmt='%.2f')
-
-    plt.title('Comparison of Median DNI Across Three Sites')
-    plt.xlabel('Site')
-    plt.ylabel('Median DNI')
-    plt.show()
-    #standard deviation comparison plot of DNI
     std_dni_1 = df1['DNI'].std()
     std_dni_2 = df2['DNI'].std()
     std_dni_3 = df3['DNI'].std()
@@ -188,26 +150,7 @@ def mean_median_std_comparison(df1,df2,df3):
     plt.xlabel('Site')
     plt.ylabel('Mean DHI')
     plt.show()
-    #median comparison plot of DHI
-    median_dhi_1 = df1['DHI'].median()
-    median_dhi_2 = df2['DHI'].median()
-    median_dhi_3 = df3['DHI'].median()
-    
-    data = {
-    'Site': ['Benin', 'Sierraleone', 'Togo'],
-    'Median DHI': [median_dhi_1, median_dhi_2, median_dhi_3]
-    }
-    median_df = pd.DataFrame(data)
-    plt.figure(figsize=(10, 6))
-    bars=plt.bar(median_df['Site'], median_df['Median DHI'], color=['blue', 'green', 'orange'])
-    
-    plt.bar_label(bars, fmt='%.2f')
 
-    plt.title('Comparison of Median DHI Across Three Sites')
-    plt.xlabel('Site')
-    plt.ylabel('Median DHI')
-    plt.show()
-    #standard deviation comparison plot of DHI
     std_dhi_1 = df1['DHI'].std()
     std_dhi_2 = df2['DHI'].std()
     std_dhi_3 = df3['DHI'].std()
@@ -227,6 +170,61 @@ def mean_median_std_comparison(df1,df2,df3):
     plt.ylabel('Std DHI')
     plt.show()
     ########################
+def plot_daily_mean(df1, df2, df3):
+    # Resample each DataFrame to daily means
+    df1.index = pd.to_datetime(df1['Timestamp'])
+    df2.index = pd.to_datetime(df2['Timestamp'])
+    df3.index = pd.to_datetime(df3['Timestamp'])
+    
+    df1 = df1.drop(columns=['Timestamp'])
+    df2 = df2.drop(columns=['Timestamp'])
+    df3 = df3.drop(columns=['Timestamp'])
+
+
+    daily_mean_df1 = df1.resample('D').mean()
+    daily_mean_df2 = df2.resample('D').mean()
+    daily_mean_df3 = df3.resample('D').mean()
+    
+    variables = ['GHI', 'DNI', 'DHI']
+    
+    for var in variables:
+        plt.figure(figsize=(10, 6))
+        plt.plot(daily_mean_df1.index, daily_mean_df1[var], label='Benin')
+        plt.plot(daily_mean_df2.index, daily_mean_df2[var], label='Seirraleone')
+        plt.plot(daily_mean_df3.index, daily_mean_df3[var], label='Togo')
+        plt.title(f'Daily Mean {var}')
+        plt.xlabel('Date')
+        plt.ylabel(var)
+        plt.legend()
+        plt.show()
+
+def plot_monthly_mean(df1, df2, df3):
+    # Resample each DataFrame to daily means
+    df1.index = pd.to_datetime(df1['Timestamp'])
+    df2.index = pd.to_datetime(df2['Timestamp'])
+    df3.index = pd.to_datetime(df3['Timestamp'])
+    
+    df1 = df1.drop(columns=['Timestamp'])
+    df2 = df2.drop(columns=['Timestamp'])
+    df3 = df3.drop(columns=['Timestamp'])
+
+
+    daily_mean_df1 = df1.resample('ME').mean()
+    daily_mean_df2 = df2.resample('ME').mean()
+    daily_mean_df3 = df3.resample('ME').mean()
+    
+    variables = ['GHI', 'DNI', 'DHI']
+    
+    for var in variables:
+        plt.figure(figsize=(10, 6))
+        plt.plot(daily_mean_df1.index, daily_mean_df1[var], label='Benin')
+        plt.plot(daily_mean_df2.index, daily_mean_df2[var], label='Seirraleone')
+        plt.plot(daily_mean_df3.index, daily_mean_df3[var], label='Togo')
+        plt.title(f'Monthly Mean {var}')
+        plt.xlabel('Month')
+        plt.ylabel(var)
+        plt.legend()
+        plt.show()
     
 def plot_over_an_hour(df1, df2, df3):
     # Convert 'Timestamp' columns to datetime
@@ -410,6 +408,7 @@ def correlation(df):
     plt.figure(figsize=(14, 12))
     
     plt.subplot(2, 1, 1)
+    # sb.pairplot(df[['GHI','DNI','DHI','TModA', 'TModB']])
     # First heatmap for temperature correlations
     plt.subplot(2, 1, 1)  # 2 rows, 1 column, position 1
     sb.heatmap(df_correlation_temp, annot=True, cmap='coolwarm')
