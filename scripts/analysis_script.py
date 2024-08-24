@@ -3,6 +3,7 @@ import numpy as np
 from scipy import stats
 import matplotlib.pyplot as plt
 import seaborn as sb
+from functools import reduce
 
 
 def check_missing_value(df):
@@ -395,7 +396,12 @@ def plot_over_a_month(df1, df2, df3):
     
     plt.show()
 
-
+def merge_df(df1,df2,df3):
+     dfs = [df1,df2,df3]
+     merged_df = reduce(lambda left, right: pd.merge(left, right, on=['Timestamp', 'GHI', 'DNI', 'DHI', 'ModA', 'ModB', 'Tamb', 'RH', 'WS',
+       'WSgust', 'WSstdev', 'WD', 'WDstdev', 'BP', 'Cleaning', 'Precipitation',
+       'TModA', 'TModB'],how='outer'), dfs)
+     return merged_df
     
 def correlation(df):
     df_correlation_temp=df[['GHI','DNI','DHI','TModA', 'TModB']].corr()
@@ -418,3 +424,39 @@ def correlation(df):
     plt.tight_layout()
     plt.show()    
     # return df_correlation
+    
+def polar_plot(df):
+    df['WD_rad'] = np.deg2rad(df['WD'])
+
+    # Wind speed data
+    wind_speed = df['WS']
+    wind_direction = df['WD_rad']
+    # Create polar plot
+    fig, ax = plt.subplots(subplot_kw={'projection': 'polar'})
+
+    # Histogram of wind speed
+    hist, edges = np.histogram(df['WD_rad'], bins=36, range=(0, 2 * np.pi))
+    width = np.diff(edges)
+    bars = ax.bar(edges[:-1], hist, width=width, align='center', alpha=0.5, color='b')
+
+    # Add wind speed to the plot
+    for bar in bars:
+        bar.set_facecolor(plt.cm.jet(np.random.rand()))  # Random color for each bar
+
+    ax.set_title("Wind Speed and Direction Distribution")
+    plt.show()
+    # Plot wind direction variability
+    fig, ax = plt.subplots(figsize=(10, 6))
+
+    # Plot wind direction variability
+    ax.hist(df['WDstdev'], bins=30, color='orange', edgecolor='black', alpha=0.7)
+
+    ax.set_title("Wind Direction Variability")
+    ax.set_xlabel("Wind Direction Standard Deviation")
+    ax.set_ylabel("Frequency")
+    plt.show()
+def temperatur_analysis(df):
+    corr_matrix = df[['RH', 'Tamb', 'GHI', 'DNI', 'DHI']].corr()
+    print(corr_matrix)
+
+
